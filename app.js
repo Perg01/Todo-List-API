@@ -6,6 +6,10 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
+app.get('/', (req, res) => {
+    res.send('Hello World!');
+});
+
 app.post('/api/register', registerUser);
 app.post('/api/login', loginUser);
 

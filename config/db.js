@@ -9,6 +9,7 @@ const pool = new Pool({
     database: process.env.DB_NAME,
     password: process.env.DB_PASSWORD,
     port: process.env.DB_PORT,
+    connection: process.env.DB_CONNECTION,
 });
 
 // Function to query the database
