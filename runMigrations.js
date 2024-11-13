@@ -3,16 +3,22 @@ import fs from 'fs';
 import path from 'path';
 
 const runMigrations = async () => {
-    const migrationPath = path.resolve('./migrations/create_users_table.sql');
-    const migrationSQL = fs.readFileSync(migrationPath, 'utf-8');
 
     try {
-        await pool.query(migrationSQL);
+
+        const usersMigration = fs.readFileSync(path.resolve('./migrations/create_users_table.sql'), 'utf-8');
+        const todosMigration = fs.readFileSync(path.resolve('./migrations/todos.sql'), 'utf-8');
+
+        console.log('Executing users migration...');
+        await pool.query(usersMigration);
+        console.log('Executing todos migration...');
+        await pool.query(todosMigration);
+
         console.log('Migration completed successfully');
     } catch (error) {
         console.error('Migration failed:', error);
     } finally {
-        pool.end();
+        await pool.end();
     }
 };
 
