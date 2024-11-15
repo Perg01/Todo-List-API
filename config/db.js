@@ -12,6 +12,11 @@ const pool = new Pool({
     connection: process.env.DB_CONNECTION,
 });
 
+pool.connect()
+    .then(() => console.log("Connected to PostgreSQL"))
+    .catch(err => console.error("Failed to connect to PostgreSQL:", err));
+
+
 // Function to query the database
 export const query = (text, params) => pool.query(text, params);
 export default pool;

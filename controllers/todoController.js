@@ -15,7 +15,7 @@ export const createTodo = async (req, res) => {
             [userId, title, description]
         );
 
-        res.status(201).json({ message: 'Todo created successfully' }, result.rows[0]);
+        res.status(201).json({ message: 'Todo created successfully', data: result.rows[0] });
     } catch (error) {
         console.error('Error creating todo:', error);
         res.status(500).json({ error: 'Failed to create todo' });

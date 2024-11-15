@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { query } from '../config/db.js';
+import pool from '../config/db.js';
 
 export const registerUser = async (req, res) => {
     const { name, email, password } = req.body;
@@ -26,6 +27,7 @@ export const registerUser = async (req, res) => {
 
         res.status(201).json({ message: 'User registered successfully', user: newUser.rows[0] });
     } catch (error) {
+        console.error("Registration error:", error);
         res.status(500).json({ error: 'Failed to register user' });
     }
 };
@@ -41,7 +43,7 @@ export const loginUser = async (req, res) => {
     try {
 
         // Check if the user exists
-        const userResult = await pool.query('SELECT * users WHERE email = $1', [email]);
+        const userResult = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
 
         if (userResult.rows.length === 0) {
             return res.status(400).json({ message: 'User not found' });
@@ -64,6 +66,7 @@ export const loginUser = async (req, res) => {
 
         res.status(200).json({ token, user: { id: user.id, name: user.name, email: user.email } });
     } catch (error) {
+        console.error("Login error:", error);
         res.status(500).json({ error: 'Failed to login user' });
     }
 };
