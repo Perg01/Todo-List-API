@@ -6,7 +6,7 @@ import passport from './config/passport.js';
 import session from 'express-session';
 import './config/passport.js';
 
-import { authenticateUser } from './middleware/authMiddleware.js';
+import { authenticateUser, isAuthenticated } from './middleware/authMiddleware.js';
 
 dotenv.config();
 const app = express();
@@ -35,13 +35,16 @@ app.get('/', (req, res) => {
 
 app.post('/api/register', registerUser);
 app.post('/api/login', loginUser);
-app.post('/api/todos', authenticateUser, createTodo);
+app.post('/api/todos', isAuthenticated, createTodo);
 
-app.get('/auth/google',
+app.get(
+    '/auth/google',
     passport.authenticate('google', { scope: ['profile', 'email'] })
 );
 
-app.get('/auth/google/callback',
+
+app.get(
+    '/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/' }),
     (req, res) => {
         res.redirect('/dashboard');
