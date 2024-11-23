@@ -11,7 +11,7 @@ passport.use(
     },
         async (accessToken, refreshToken, profile, done) => { // Process's user data received from Google
             try {
-                console.log('Google profile:', profile);
+                // console.log('Google profile:', profile);
                 const email = profile.emails[0].value;
                 const name = profile.displayName;
 

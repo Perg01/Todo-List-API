@@ -1,7 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import { registerUser, loginUser } from './controllers/userController.js';
-import { createTodo } from './controllers/todoController.js';
+import { createTodo, getTodos } from './controllers/todoController.js';
 import passport from './config/passport.js';
 import session from 'express-session';
 import './config/passport.js';
@@ -42,7 +42,6 @@ app.get(
     passport.authenticate('google', { scope: ['profile', 'email'] })
 );
 
-
 app.get(
     '/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/' }),
@@ -50,5 +49,7 @@ app.get(
         res.redirect('/dashboard');
     }
 );
+
+app.get('/api/todos', isAuthenticated, getTodos);
 
 export default app;

@@ -22,3 +22,13 @@ export const createTodo = async (req, res) => {
     }
 };
 
+export const getTodos = async (req, res) => {
+    try {
+        const userID = req.user.id;
+        const result = await pool.query('SELECT * FROM todos WHERE user_id = $1', [userID]);
+        res.status(200).json({ todos: result.rows });
+    } catch (error) {
+        console.error('Error getting todos:', error);
+        res.status(500).json({ message: 'Failed to get todos' });
+    }
+};
