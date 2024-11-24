@@ -6,7 +6,7 @@ import passport from './config/passport.js';
 import session from 'express-session';
 import './config/passport.js';
 
-import { authenticateUser, isAuthenticated } from './middleware/authMiddleware.js';
+import { isAuthenticated } from './middleware/authMiddleware.js';
 
 dotenv.config();
 const app = express();
