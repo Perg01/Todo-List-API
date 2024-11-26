@@ -1,7 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import { registerUser, loginUser } from './controllers/userController.js';
-import { createTodo, getTodos, updateTodo } from './controllers/todoController.js';
+import { createTodo, getTodos, updateTodo, deleteTodo } from './controllers/todoController.js';
 import passport from './config/passport.js';
 import session from 'express-session';
 import './config/passport.js';
@@ -37,6 +37,7 @@ app.post('/api/register', registerUser);
 app.post('/api/login', loginUser);
 app.post('/api/todos', isAuthenticated, createTodo);
 app.post('/api/update', isAuthenticated, updateTodo);
+app.post('/api/delete', isAuthenticated, deleteTodo);
 
 app.get(
     '/auth/google',

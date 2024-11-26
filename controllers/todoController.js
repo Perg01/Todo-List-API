@@ -62,5 +62,23 @@ export const updateTodo = async (req, res) => {
 };
 
 export const deleteTodo = async (req, res) => {
+    try {
+        const { id: todoID } = req.body;
 
+        if (!todoID) {
+            res.status(400).json({ error: 'ID is required' });
+        }
+
+        const validateID = await pool.query('SELECT EXISTS(SELECT 1 FROM todos WHERE id = $1)', [todoID]);
+        if (!validateID.rows[0].exists) {
+            res.status(400).json({ error: 'Invalid, id doesn\'t exist' });
+        }
+
+        const deleteTodo = await pool.query('DELETE FROM todos WHERE id = $1 RETURNING *', [todoID]);
+        res.status(200).json({ message: `Todo # ${todoID} has been deleted successfully`, todo: deleteTodo.rows[0] });
+
+    } catch (error) {
+        console.error('Error Deleting todo:', error);
+        res.status(500).json({ message: 'Failed to delete todo' });
+    }
 };
