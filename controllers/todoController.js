@@ -1,3 +1,4 @@
+import { INTEGER } from 'sequelize';
 import pool from '../config/db.js';
 
 export const createTodo = async (req, res) => {
@@ -23,11 +24,29 @@ export const createTodo = async (req, res) => {
     }
 };
 
+// GET with pagination
 export const getTodos = async (req, res) => {
+
     try {
+        const limit = parseInt(req.query.limit, 10) || 10;
+        const page = parseInt(req.query.page, 10) || 1;
+
+        if (isNaN(page) || page < 1) {
+            return res.status(400).json({ error: 'Invalid page number' });
+        }
+
+        const offset = (page - 1) * limit;
+
         const userID = req.user.id;
-        const result = await pool.query('SELECT * FROM todos WHERE user_id = $1', [userID]);
-        res.status(200).json({ todos: result.rows });
+        // Returns limit number of todos made by the user
+        const result = await pool.query('SELECT * FROM todos WHERE user_id = $1 LIMIT $2 OFFSET $3',
+            [userID, limit, offset]);
+        // total number of todos made by the user
+        const countResult = await pool.query('SELECT COUNT(*) FROM todos WHERE user_id = $1', [userID]);
+
+        const total = parseInt(countResult.rows[0].count, 10);
+
+        res.status(200).json({ todos: result.rows, total, page, limit });
 
     } catch (error) {
         console.error('Error getting todos:', error);
