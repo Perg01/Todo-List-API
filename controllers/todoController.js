@@ -65,7 +65,8 @@ export const updateTodo = async (req, res) => {
 
         // Check if the todo exists
         // const validID = await pool.query('SELECT COUNT(*) FROM todos WHERE id = $1', [todoID]);
-        const validID = await pool.query('SELECT EXISTS(SELECT 1 FROM todos WHERE id = $1)', [todoID]);
+        const validID = await pool.query('SELECT EXISTS(SELECT 1 FROM todos WHERE id = $1 AND user_id = $2)',
+            [todoID, req.user.id]);
         if (!validID.rows[0].exists) {
             return res.status(400).json({ error: 'Invalid, id doesn\'t exists' });
         }
