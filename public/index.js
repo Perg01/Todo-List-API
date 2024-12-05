@@ -8,4 +8,9 @@ document.addEventListener("DOMContentLoaded", () => {
     registerButton.addEventListener("click", () => {
         window.location.href = "./register.html";
     });
+
+    loginButton.addEventListener("click", () => {
+        window.location.href = "./login.html";
+    });
+
 });

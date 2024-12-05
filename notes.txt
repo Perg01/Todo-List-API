@@ -10,3 +10,8 @@
     + password
     + Manage user token for manual login users
     + Manage OAuth users (connect.sid, cookies)
+- After logging in, the user should be able to see their todos
+  - create a todo
+  - update a todo
+  - delete a todo
+  - logout button
