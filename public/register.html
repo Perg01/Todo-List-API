@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
-    <link rel="stylesheet" href="./css/register.css">
 </head>
 <body>
     <h1>Register</h1>
@@ -20,6 +19,15 @@
         <br>
         <button type="submit">Register</button>
     </form>
+
+    <button id="google-login">Sign in with Google</button>
+    <!-- <div class="g_id_signin"></div> -->
+
+    <script>
+        document.getElementById("google-login").addEventListener("click", () => {
+            window.location.href = '/auth/google';
+        });
+    </script>
     <script src="./js/register.js"></script>
 </body>
 </html>

@@ -27,7 +27,7 @@ passport.use(
                     );
                     user = insertResult.rows[0];
                 }
-
+                console.log(profile);
                 done(null, user);
             } catch (error) {
                 console.error('Error logging in with Google:', error);
