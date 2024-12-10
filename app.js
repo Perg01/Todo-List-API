@@ -5,7 +5,7 @@ import { createTodo, getTodos, updateTodo, deleteTodo } from './controllers/todo
 import passport from './config/passport.js';
 import session from 'express-session';
 import './config/passport.js';
-
+import cookieParser from 'cookie-parser';
 
 import { isAuthenticated } from './middleware/authMiddleware.js';
 
@@ -25,6 +25,8 @@ app.use(
         },
     })
 );
+
+app.use(cookieParser());
 
 
 // Initialize passport middleware
@@ -50,10 +52,14 @@ app.get(
     '/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/' }),
     (req, res) => {
-        res.redirect('/dashboard');
+        res.redirect('/index.html');
     }
 );
 
 app.get('/api/todos', isAuthenticated, getTodos);
+// Check if the user is authenticated and logged in
+app.get('/api/auth/status', isAuthenticated, (req, res) => {
+    res.status(200).json({ loggedIn: true, user: req.user });
+});
 
 export default app;

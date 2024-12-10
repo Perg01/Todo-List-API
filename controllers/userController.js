@@ -64,7 +64,14 @@ export const loginUser = async (req, res) => {
             { expiresIn: '1h' }
         );
 
-        res.status(200).json({ token, user: { id: user.id, name: user.name, email: user.email } });
+        res.cookie('token', token, {
+            httpOnly: true, // prevents client-side access
+            secure: false, // set to true if using HTTPS
+            sameSite: 'Strict',
+            maxAge: 3600000, // 1 hour
+        });
+
+        return res.status(200).json({ token, user: { id: user.id, name: user.name, email: user.email } });
     } catch (error) {
         console.error("Login error:", error);
         res.status(500).json({ error: 'Failed to login user' });

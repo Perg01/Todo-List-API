@@ -8,7 +8,7 @@ export const isAuthenticated = (req, res, next) => {
     }
 
     // token based authentication
-    const token = req.headers.authorization?.split(' ')[1];
+    const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
     if (!token) {
         return res.status(401).json({ error: 'Access denied, no token provided' });
     }
