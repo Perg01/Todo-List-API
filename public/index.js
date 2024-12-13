@@ -6,7 +6,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     const todoSection = document.getElementById("todo-section");
     const previousPage = document.getElementById("prevPage");
     const nextPage = document.getElementById("nextPage");
-    const todoList = document.getElementById('todo-list');
+    const todoList = document.getElementById("todo-list");
+    const logoutButton = document.getElementById("logout-button");
+    const logoutSection = document.getElementById("logout-section");
 
     let currentPage = 1;
     const todosPerPage = 10;
@@ -30,6 +32,42 @@ document.addEventListener("DOMContentLoaded", async () => {
     loginButton.addEventListener("click", () => {
         window.location.href = "./login.html";
     });
+
+    logoutButton.addEventListener("click", () => {
+        logout();
+    });
+
+    async function logout() {
+        try {
+            const response = await fetch('/api/logout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                },
+                credentials: 'include',
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                console.log('Logout successful');
+                checkLoginStatus();
+                window.location.href = '/index.html';
+
+                if (data.loggedIn) {
+                    console.log('User is authenticated', data.user);
+                    logoutButton.classList.add('hidden');
+                } else {
+                    logoutButton.classList.remove('hidden');
+                }
+            }
+
+        } catch (error) {
+            console.error('Error logging out:', error);
+
+        }
+    }
 
     async function fetchTodos(page = 1) {
         try {
@@ -103,6 +141,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             return;
         }
         todos.forEach((todo) => {
+            // const task = document.createElement('a');
             const li = document.createElement('li');
             li.textContent = `${todo.id}: ${todo.title} | ${todo.description}`;
             todoList.appendChild(li);
