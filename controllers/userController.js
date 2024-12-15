@@ -87,6 +87,16 @@ export const logoutUser = async (req, res) => {
             maxAge: 0,
         });
 
+        const oAuthCookie = req.cookies['connect.sid'];
+
+        if (oAuthCookie) {
+            res.clearCookie('connect.sid', {
+                httpOnly: true,
+                secure: false,
+                sameSite: 'Strict',
+                maxAge: 0,
+            });
+        }
         res.status(200).json({ message: 'User logged out successfully' });
 
     } catch (error) {
