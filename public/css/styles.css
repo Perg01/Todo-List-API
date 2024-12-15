@@ -79,6 +79,22 @@ h1 {
     border-radius: 4px;
 }
 
+.logout-section {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.logout-button {
+    background: #edda04;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
 .hidden {
     display: none;
 }

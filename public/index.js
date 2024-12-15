@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     async function logout() {
         try {
-            const response = await fetch('/api/logout', {
+            const res = await fetch('/api/logout', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -48,21 +48,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                 credentials: 'include',
             });
 
-            const data = await response.json();
 
-            if (response.ok) {
+            if (res.ok) {
                 console.log('Logout successful');
                 checkLoginStatus();
                 window.location.href = '/index.html';
-
-                if (data.loggedIn) {
-                    console.log('User is authenticated', data.user);
-                    logoutButton.classList.add('hidden');
-                } else {
-                    logoutButton.classList.remove('hidden');
-                }
+            } else {
+                throw new Error('Logout failed');
             }
-
         } catch (error) {
             console.error('Error logging out:', error);
 
@@ -111,11 +104,13 @@ document.addEventListener("DOMContentLoaded", async () => {
                     console.log('User is authenticated', data.user);
                     authSection.classList.add('hidden');
                     todoSection.classList.remove('hidden');
+                    logoutSection.classList.remove('hidden');
                     fetchTodos();
                 } else {
                     console.log('User not logged in');
                     authSection.classList.remove('hidden');
                     todoSection.classList.add('hidden');
+                    logoutSection.classList.add('hidden');
                 }
             } else {
                 throw new Error('Failed to check login status');
